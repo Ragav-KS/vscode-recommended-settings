@@ -1,14 +1,12 @@
-import * as vscode from "vscode";
+import { window, commands, type ExtensionContext } from "vscode";
 
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context: ExtensionContext) {
   console.log("Activating extension");
 
-  const disposable = vscode.commands.registerCommand(
+  const disposable = commands.registerCommand(
     "recommended-settings.helloWorld",
     () => {
-      vscode.window.showInformationMessage(
-        "Hello World from Recommended Settings!"
-      );
+      window.showInformationMessage("Hello World from Recommended Settings!");
     }
   );
 
