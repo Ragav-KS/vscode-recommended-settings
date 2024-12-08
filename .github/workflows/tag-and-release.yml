@@ -2,7 +2,7 @@ name: Bump version
 on:
   push:
     branches:
-      - master
+      - 11-fix-tagging
 
 jobs:
   build:
