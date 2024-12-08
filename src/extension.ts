@@ -4,7 +4,7 @@ export function activate(context: ExtensionContext) {
   console.log("Activating extension");
 
   const disposable = commands.registerCommand(
-    "recommended-settings.helloWorld",
+    "recommended-settings.load-recommended-settings",
     () => {
       window.showInformationMessage("Hello World from Recommended Settings!");
     }

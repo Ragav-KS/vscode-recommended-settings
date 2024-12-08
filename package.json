@@ -14,8 +14,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "recommended-settings.helloWorld",
-        "title": "Hello World"
+        "command": "recommended-settings.load-recommended-settings",
+        "title": "Load Workspace Recommended Settings"
       }
     ]
   },
