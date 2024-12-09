@@ -1,13 +1,28 @@
-import { strictEqual } from "assert";
+import { ok } from "assert";
+import { assert } from "console";
 
-import { window } from "vscode";
-// import * as myExtension from '../../extension';
+import { commands, extensions, window } from "vscode";
 
 suite("Extension Test Suite", () => {
   window.showInformationMessage("Start all tests.");
 
-  test("Sample test", () => {
-    strictEqual(-1, [1, 2, 3].indexOf(5));
-    strictEqual(-1, [1, 2, 3].indexOf(0));
+  suiteTeardown(() => {
+    window.showInformationMessage("All tests done!");
+  });
+
+  test("Extension should activate", async () => {
+    const extension = extensions.getExtension("ragavks.recommended-settings");
+
+    ok(extension, "Extension found");
+
+    await extension.activate();
+
+    ok(extension.isActive, "Extension should be able to activate");
+  });
+
+  test("'Load Workspace Recommended Settings' should be registered", async () => {
+    const registeredCommands = await commands.getCommands();
+
+    assert(registeredCommands.includes("Load Workspace Recommended Settings"));
   });
 });
