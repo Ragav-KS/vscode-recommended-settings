@@ -54,6 +54,51 @@ suite("Extension Test Suite", () => {
       );
     });
 
+    test("Command should fail if executed outside of a workspace", async () => {
+      // setup stubs
+      stub(workspace, "workspaceFolders").value(undefined);
+
+      // trigger
+      await commands.executeCommand(
+        "recommended-settings.load-recommended-settings"
+      );
+
+      // assert
+      ok(
+        errorMessageSpy.calledOnceWith("Cannot be run outside of a workspace.")
+      );
+    });
+
+    test("Command should fail if workspace doesn't contain any folders for some reason", async () => {
+      // setup stubs
+      stub(workspace, "workspaceFolders").value([]);
+
+      // trigger
+      await commands.executeCommand(
+        "recommended-settings.load-recommended-settings"
+      );
+
+      // assert
+      ok(errorMessageSpy.calledOnceWith("No folders found in workspace"));
+    });
+
+    test("Command should fail if run inside a multi folder workspace", async () => {
+      // setup stubs
+      stub(workspace, "workspaceFolders").value([{}, {}]);
+
+      // trigger
+      await commands.executeCommand(
+        "recommended-settings.load-recommended-settings"
+      );
+
+      // assert
+      ok(
+        errorMessageSpy.calledOnceWith(
+          "Loading from multi-folder workspace is currently not supported."
+        )
+      );
+    });
+
     test("Command should load settings from recommended settings file", async () => {
       // setup stubs
       stub(workspace, "workspaceFolders").value([
