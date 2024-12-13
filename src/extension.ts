@@ -1,26 +1,77 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import path from "path";
+import {
+  commands,
+  ConfigurationTarget,
+  Uri,
+  window,
+  workspace,
+  type ExtensionContext,
+} from "vscode";
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context: ExtensionContext) {
+  console.log("Activating extension");
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "recommended-settings" is now active!');
+  const disposable = commands.registerCommand(
+    "recommended-settings.load-recommended-settings",
+    async () => {
+      const filename = "recommended-settings.json";
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('recommended-settings.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Recommended Settings!');
-	});
+      if (!workspace.workspaceFolders) {
+        window.showErrorMessage("Cannot be run outside of a workspace.");
+        return;
+      }
 
-	context.subscriptions.push(disposable);
+      if (workspace.workspaceFolders?.length === 0) {
+        window.showErrorMessage("No folders found in workspace");
+        return;
+      }
+
+      if (workspace.workspaceFolders?.length > 1) {
+        window.showErrorMessage(
+          "Loading from multi-folder workspace is currently not supported."
+        );
+        return;
+      }
+
+      const workspaceFolder = workspace.workspaceFolders[0];
+
+      const folderPath = workspaceFolder.uri.fsPath;
+
+      const filePath = path.join(path.join(folderPath, ".vscode"), filename);
+      const fileUri = Uri.file(filePath);
+
+      try {
+        await workspace.fs.stat(fileUri);
+      } catch (err) {
+        window.showErrorMessage(
+          "Recommended settings file not found in workspace."
+        );
+        return;
+      }
+
+      console.log("Found `recommended-settings.json`. Loading settings");
+
+      const recommendedSettingsJson = await workspace
+        .openTextDocument(fileUri)
+        .then(
+          (document) => JSON.parse(document.getText()) as Record<string, any>
+        );
+
+      await Promise.allSettled(
+        Object.entries(recommendedSettingsJson).map(([key, value]) =>
+          workspace
+            .getConfiguration()
+            .update(key, value, ConfigurationTarget.Global)
+        )
+      );
+
+      window.showInformationMessage(
+        "Loaded workspace recommended settings to Global settings."
+      );
+    }
+  );
+
+  context.subscriptions.push(disposable);
 }
 
-// This method is called when your extension is deactivated
 export function deactivate() {}
