@@ -6,7 +6,6 @@ import {
   window,
   workspace,
   type ExtensionContext,
-  type FileStat,
 } from "vscode";
 
 export function activate(context: ExtensionContext) {
@@ -14,47 +13,61 @@ export function activate(context: ExtensionContext) {
 
   const disposable = commands.registerCommand(
     "recommended-settings.load-recommended-settings",
-    () => {
+    async () => {
       const filename = "recommended-settings.json";
 
-      workspace.workspaceFolders?.forEach(async (workspaceFolder) => {
-        const folderPath = workspaceFolder.uri.fsPath;
+      if (!workspace.workspaceFolders) {
+        window.showErrorMessage("Cannot be run outside of a workspace.");
+        return;
+      }
 
-        const filePath = path.join(path.join(folderPath, ".vscode"), filename);
-        const fileUri = Uri.file(filePath);
+      if (workspace.workspaceFolders?.length === 0) {
+        window.showErrorMessage("No folders found in workspace");
+        return;
+      }
 
-        let fileExists: FileStat | undefined = undefined;
-        try {
-          fileExists = await workspace.fs.stat(fileUri);
-        } catch (err) {
-          console.log("Recommended settings file not found.");
-        }
+      if (workspace.workspaceFolders?.length > 1) {
+        window.showErrorMessage(
+          "Loading from multi-folder workspace is currently not supported."
+        );
+        return;
+      }
 
-        if (fileExists) {
-          console.log("Found recommended-settings.json. Loading settings");
+      const workspaceFolder = workspace.workspaceFolders[0];
 
-          const recommendedSettingsJson = await workspace
-            .openTextDocument(fileUri)
-            .then(
-              (document) =>
-                JSON.parse(document.getText()) as Record<string, any>
-            );
+      const folderPath = workspaceFolder.uri.fsPath;
 
-          Object.entries(recommendedSettingsJson).forEach(([key, value]) => {
-            workspace
-              .getConfiguration()
-              .update(key, value, ConfigurationTarget.Global);
-          });
+      const filePath = path.join(path.join(folderPath, ".vscode"), filename);
+      const fileUri = Uri.file(filePath);
 
-          window.showInformationMessage(
-            "Loaded workspace recommended settings to Global settings."
-          );
-        } else {
-          window.showErrorMessage(
-            "Recommended settings file not found in workspace."
-          );
-        }
-      });
+      try {
+        await workspace.fs.stat(fileUri);
+      } catch (err) {
+        window.showErrorMessage(
+          "Recommended settings file not found in workspace."
+        );
+        return;
+      }
+
+      console.log("Found `recommended-settings.json`. Loading settings");
+
+      const recommendedSettingsJson = await workspace
+        .openTextDocument(fileUri)
+        .then(
+          (document) => JSON.parse(document.getText()) as Record<string, any>
+        );
+
+      await Promise.allSettled(
+        Object.entries(recommendedSettingsJson).map(([key, value]) =>
+          workspace
+            .getConfiguration()
+            .update(key, value, ConfigurationTarget.Global)
+        )
+      );
+
+      window.showInformationMessage(
+        "Loaded workspace recommended settings to Global settings."
+      );
     }
   );
 
