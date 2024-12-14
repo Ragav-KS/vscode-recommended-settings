@@ -9,6 +9,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 9
+
       - name: Calculate next version
         id: calculate_version
         uses: mathieudutour/github-tag-action@v6.2
@@ -17,7 +22,8 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Bump version
-        run: echo "${{ steps.calculate_version.outputs.new_tag }}"
+        run: |
+          pnpm version "${{ steps.calculate_version.outputs.new_tag }}" -m "chore(project): Bump version"
 
   # build:
   #   runs-on: ubuntu-latest
