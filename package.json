@@ -3,6 +3,10 @@
   "name": "recommended-settings",
   "displayName": "Recommended Settings",
   "description": "Recommend settings to project developers.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ragav-KS/vscode-recommended-settings"
+  },
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.95.0"
