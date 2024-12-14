@@ -1,7 +1,7 @@
 {
   "publisher": "ragavks",
   "name": "recommended-settings",
-  "displayName": "Recommended Settings",
+  "displayName": "Project Recommended Settings",
   "description": "Recommend settings to project developers.",
   "repository": {
     "type": "git",
@@ -20,7 +20,7 @@
     "commands": [
       {
         "command": "recommended-settings.load-recommended-settings",
-        "title": "Load Workspace Recommended Settings"
+        "title": "Load Project Recommended Settings"
       }
     ]
   },
