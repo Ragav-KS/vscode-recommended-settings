@@ -66,7 +66,7 @@ export function activate(context: ExtensionContext) {
       );
 
       window.showInformationMessage(
-        "Loaded workspace recommended settings to Global settings."
+        "Loaded project recommended settings to Global settings."
       );
     }
   );

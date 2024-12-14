@@ -1,8 +1,12 @@
 {
   "publisher": "ragavks",
   "name": "recommended-settings",
-  "displayName": "Recommended Settings",
+  "displayName": "Project Recommended Settings",
   "description": "Recommend settings to project developers.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ragav-KS/vscode-recommended-settings"
+  },
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.95.0"
@@ -16,7 +20,7 @@
     "commands": [
       {
         "command": "recommended-settings.load-recommended-settings",
-        "title": "Load Workspace Recommended Settings"
+        "title": "Load Project Recommended Settings"
       }
     ]
   },

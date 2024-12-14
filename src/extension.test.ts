@@ -31,7 +31,7 @@ suite("Extension Test Suite", () => {
     });
   });
 
-  suite("'Load Workspace Recommended Settings' command", () => {
+  suite("'Load Project Recommended Settings' command", () => {
     suiteSetup(async () => {
       const extension = extensions.getExtension(
         "ragavks.recommended-settings"
@@ -131,7 +131,7 @@ suite("Extension Test Suite", () => {
       equal(await workspace.getConfiguration().get("files.autoSave"), true);
       ok(
         informationMessageSpy.calledOnceWith(
-          "Loaded workspace recommended settings to Global settings."
+          "Loaded project recommended settings to Global settings."
         )
       );
     });
