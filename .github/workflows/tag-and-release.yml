@@ -32,7 +32,7 @@ jobs:
           pnpm version "${{ steps.calculate_version.outputs.new_tag }}" --git-tag-version false
           new_changelog="${{ steps.calculate_version.outputs.changelog }}"
           echo -e "# Change Log\n\n${new_changelog}\n$(tail -n +3 CHANGELOG.md)" > CHANGELOG.md
-          git add package.json
+          git add package.json CHANGELOG.md
           git commit -m "chore(project): Bump version to ${{ steps.calculate_version.outputs.new_tag }}"
           git push
 
