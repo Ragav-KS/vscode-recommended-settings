@@ -8,6 +8,7 @@ import {
   window,
   workspace,
   type TextDocument,
+  type WorkspaceConfiguration,
 } from "vscode";
 
 suite("Extension Test Suite", () => {
@@ -50,6 +51,29 @@ suite("Extension Test Suite", () => {
       ok(
         registeredCommands.includes(
           "recommended-settings.load-recommended-settings"
+        )
+      );
+    });
+
+    test("Command should fail if `recommended-settings.recommended-settings-file` setting is misconfigured", async () => {
+      // setup stubs
+      stub(workspace, "getConfiguration")
+        .withArgs("recommended-settings")
+        .returns({
+          get: stub()
+            .withArgs("recommended-settings.recommended-settings-file")
+            .returns(undefined),
+        } as unknown as WorkspaceConfiguration);
+
+      // trigger
+      await commands.executeCommand(
+        "recommended-settings.load-recommended-settings"
+      );
+
+      // assert
+      ok(
+        errorMessageSpy.calledOnceWith(
+          "`recommended-settings.recommended-settings-file` setting is misconfigured."
         )
       );
     });
