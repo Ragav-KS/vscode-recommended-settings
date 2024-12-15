@@ -16,7 +16,7 @@ export function activate(context: ExtensionContext) {
     async () => {
       const filename: string | undefined = workspace
         .getConfiguration("recommended-settings")
-        .get("recommended-settings.recommended-settings-file");
+        .get("recommended-settings-file");
 
       if (!filename) {
         window.showErrorMessage(

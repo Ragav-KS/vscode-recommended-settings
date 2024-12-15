@@ -60,9 +60,7 @@ suite("Extension Test Suite", () => {
       stub(workspace, "getConfiguration")
         .withArgs("recommended-settings")
         .returns({
-          get: stub()
-            .withArgs("recommended-settings.recommended-settings-file")
-            .returns(undefined),
+          get: stub().withArgs("recommended-settings-file").returns(undefined),
         } as unknown as WorkspaceConfiguration);
 
       // trigger
