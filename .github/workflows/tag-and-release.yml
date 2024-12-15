@@ -30,7 +30,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
           pnpm version "${{ steps.calculate_version.outputs.new_tag }}" --git-tag-version false
-          sed '2a $CHANGELOG' CHANGELOG.md
+          sed "2a $CHANGELOG" CHANGELOG.md
           git add package.json
           git commit -m "chore(project): Bump version to ${{ steps.calculate_version.outputs.new_tag }}"
           git push
