@@ -1,5 +1,5 @@
 import { equal, ok } from "assert";
-import { fake, reset, spy, stub, type SinonSpy } from "sinon";
+import { fake, reset, restore, spy, stub, type SinonSpy } from "sinon";
 import {
   commands,
   extensions,
@@ -12,14 +12,6 @@ import {
 } from "vscode";
 
 suite("Extension Test Suite", () => {
-  let informationMessageSpy: SinonSpy;
-  let errorMessageSpy: SinonSpy;
-
-  suiteSetup(() => {
-    informationMessageSpy = spy(window, "showInformationMessage");
-    errorMessageSpy = spy(window, "showErrorMessage");
-  });
-
   suite("Activation", () => {
     test("Extension should activate", async () => {
       const extension = extensions.getExtension("ragavks.recommended-settings");
@@ -33,6 +25,9 @@ suite("Extension Test Suite", () => {
   });
 
   suite("'Load Project Recommended Settings' command", () => {
+    let informationMessageSpy: SinonSpy;
+    let errorMessageSpy: SinonSpy;
+
     suiteSetup(async () => {
       const extension = extensions.getExtension(
         "ragavks.recommended-settings"
@@ -41,8 +36,14 @@ suite("Extension Test Suite", () => {
       await extension.activate();
     });
 
+    setup(() => {
+      informationMessageSpy = spy(window, "showInformationMessage");
+      errorMessageSpy = spy(window, "showErrorMessage");
+    });
+
     teardown(() => {
       reset();
+      restore();
     });
 
     test("command should be registered", async () => {
