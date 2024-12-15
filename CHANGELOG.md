@@ -1,5 +1,16 @@
 # Change Log
 
+## [1.1.0](https://github.com/Ragav-KS/vscode-recommended-settings/compare/v1.0.0...v1.1.0) (2024-12-15)
+
+### Features
+
+- **ci:** Add automated tests ([#26](https://github.com/Ragav-KS/vscode-recommended-settings/issues/26)) ([035f358](https://github.com/Ragav-KS/vscode-recommended-settings/commit/035f358b521451554acc084a1caf81bce75e4c32)), closes [#17](https://github.com/Ragav-KS/vscode-recommended-settings/issues/17)
+- **extension:** Allow recommended settings file name to be configurable ([#25](https://github.com/Ragav-KS/vscode-recommended-settings/issues/25)) ([1fdbfcb](https://github.com/Ragav-KS/vscode-recommended-settings/commit/1fdbfcb8096b7e6b0e09d725eb943f4cff200b65))
+
+### Documentation
+
+- **README:** update README for the new setting ([#29](https://github.com/Ragav-KS/vscode-recommended-settings/issues/29)) ([af316ba](https://github.com/Ragav-KS/vscode-recommended-settings/commit/af316ba3f05f9639005ffd7f3bcf9cd41b19d9f6)), closes [#25](https://github.com/Ragav-KS/vscode-recommended-settings/issues/25) [#27](https://github.com/Ragav-KS/vscode-recommended-settings/issues/27)
+
 ## [1.0.0](https://github.com/Ragav-KS/vscode-recommended-settings/compare/v0.0.2...v1.0.0) (2024-12-15)
 
 ### ⚠ BREAKING CHANGES
