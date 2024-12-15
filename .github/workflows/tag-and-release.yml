@@ -16,6 +16,15 @@ jobs:
         with:
           version: 9
 
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
       - name: Calculate next version
         id: calculate_version
         uses: mathieudutour/github-tag-action@v6.2
