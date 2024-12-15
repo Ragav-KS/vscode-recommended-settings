@@ -22,7 +22,17 @@
         "command": "recommended-settings.load-recommended-settings",
         "title": "Load Project Recommended Settings"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Project Recommended Settings",
+      "properties": {
+        "recommended-settings.recommended-settings-file": {
+          "type": "string",
+          "default": "recommended-settings.json",
+          "markdownDescription": "Name of recommended settings file to load settings from. File should be under `.vscode` folder."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "pnpm run build",
