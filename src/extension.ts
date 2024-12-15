@@ -14,7 +14,16 @@ export function activate(context: ExtensionContext) {
   const disposable = commands.registerCommand(
     "recommended-settings.load-recommended-settings",
     async () => {
-      const filename = "recommended-settings.json";
+      const filename: string | undefined = workspace
+        .getConfiguration("recommended-settings")
+        .get("recommended-settings-file");
+
+      if (!filename) {
+        window.showErrorMessage(
+          "`recommended-settings.recommended-settings-file` setting is misconfigured."
+        );
+        return;
+      }
 
       if (!workspace.workspaceFolders) {
         window.showErrorMessage("Cannot be run outside of a workspace.");
