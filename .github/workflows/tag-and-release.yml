@@ -31,7 +31,7 @@ jobs:
           git config user.name "github-actions[bot]"
           pnpm version "${{ steps.calculate_version.outputs.new_tag }}" --git-tag-version false
           new_changelog="${{ steps.calculate_version.outputs.changelog }}"
-          sed -i '1,2{h;d};3{x;s/^/\n'"$new_changelog"'\n/;x}' CHANGELOG.md
+          echo -e "# Change Log\n\n${new_changelog}\n$(tail -n +3 CHANGELOG.md)" > CHANGELOG.md
           git add package.json
           git commit -m "chore(project): Bump version to ${{ steps.calculate_version.outputs.new_tag }}"
           git push
