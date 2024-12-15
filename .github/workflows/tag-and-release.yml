@@ -27,11 +27,16 @@ jobs:
         env:
           CHANGELOG: ${{ steps.calculate_version.outputs.changelog }}
         run: |
+          # Configure git
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
+          # Update package.json
           pnpm version "${{ steps.calculate_version.outputs.new_tag }}" --git-tag-version false
+          # Update Changelog
           new_changelog="${{ steps.calculate_version.outputs.changelog }}"
           echo -e "# Change Log\n\n${new_changelog}\n$(tail -n +3 CHANGELOG.md)" > CHANGELOG.md
+          pnpm exec prettier CHANGELOG.md --write
+          # Commit and push
           git add package.json CHANGELOG.md
           git commit -m "chore(project): Bump version to ${{ steps.calculate_version.outputs.new_tag }}"
           git push
