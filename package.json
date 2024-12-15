@@ -29,6 +29,7 @@
         "recommended-settings.recommended-settings-file": {
           "type": "string",
           "default": "recommended-settings.json",
+          "pattern": "^[\\w-]+\\.json$",
           "markdownDescription": "Name of recommended settings file to load settings from. File should be under `.vscode` folder."
         }
       }
