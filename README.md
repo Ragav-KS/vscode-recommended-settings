@@ -18,3 +18,11 @@ Keep a file named `recommended-settings.json` in your repository containing the 
 Team members can load these setttings by activating the command "Load Project Recommended Settings".
 
 ![image](https://github.com/user-attachments/assets/ab50429d-b352-43be-89e1-262832730550)
+
+## Extension Settings
+
+This extension contributes the following settings:
+
+| Setting                                          | Type     | Default                     | Value Description                                                                               |
+| ------------------------------------------------ | -------- | --------------------------- | ----------------------------------------------------------------------------------------------- |
+| `recommended-settings.recommended-settings-file` | `string` | `recommended-settings.json` | Name of recommended settings file to load settings from. File should be under `.vscode` folder. |
