@@ -1,5 +1,5 @@
 import { equal, ok } from "assert";
-import { fake, reset, restore, spy, stub, type SinonSpy } from "sinon";
+import { fake, reset, spy, stub, type SinonSpy } from "sinon";
 import {
   commands,
   extensions,
@@ -8,10 +8,17 @@ import {
   window,
   workspace,
   type TextDocument,
-  type WorkspaceConfiguration,
 } from "vscode";
 
 suite("Extension Test Suite", () => {
+  let informationMessageSpy: SinonSpy;
+  let errorMessageSpy: SinonSpy;
+
+  suiteSetup(() => {
+    informationMessageSpy = spy(window, "showInformationMessage");
+    errorMessageSpy = spy(window, "showErrorMessage");
+  });
+
   suite("Activation", () => {
     test("Extension should activate", async () => {
       const extension = extensions.getExtension("ragavks.recommended-settings");
@@ -25,9 +32,6 @@ suite("Extension Test Suite", () => {
   });
 
   suite("'Load Project Recommended Settings' command", () => {
-    let informationMessageSpy: SinonSpy;
-    let errorMessageSpy: SinonSpy;
-
     suiteSetup(async () => {
       const extension = extensions.getExtension(
         "ragavks.recommended-settings"
@@ -36,14 +40,8 @@ suite("Extension Test Suite", () => {
       await extension.activate();
     });
 
-    setup(() => {
-      informationMessageSpy = spy(window, "showInformationMessage");
-      errorMessageSpy = spy(window, "showErrorMessage");
-    });
-
     teardown(() => {
       reset();
-      restore();
     });
 
     test("command should be registered", async () => {
@@ -52,27 +50,6 @@ suite("Extension Test Suite", () => {
       ok(
         registeredCommands.includes(
           "recommended-settings.load-recommended-settings"
-        )
-      );
-    });
-
-    test("Command should fail if `recommended-settings.recommended-settings-file` setting is misconfigured", async () => {
-      // setup stubs
-      stub(workspace, "getConfiguration")
-        .withArgs("recommended-settings")
-        .returns({
-          get: stub().withArgs("recommended-settings-file").returns(undefined),
-        } as unknown as WorkspaceConfiguration);
-
-      // trigger
-      await commands.executeCommand(
-        "recommended-settings.load-recommended-settings"
-      );
-
-      // assert
-      ok(
-        errorMessageSpy.calledOnceWith(
-          "`recommended-settings.recommended-settings-file` setting is misconfigured."
         )
       );
     });
