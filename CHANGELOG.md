@@ -1,5 +1,16 @@
 # Change Log
 
+## [2.0.0](https://github.com/Ragav-KS/vscode-recommended-settings/compare/v1.1.0...v2.0.0) (2024-12-18)
+
+### ⚠ BREAKING CHANGES
+
+- **extension:** Recommended settings file name is no longer
+  configurable.
+
+### Features
+
+- **extension:** Remove configurability of recommended settings file name ([#31](https://github.com/Ragav-KS/vscode-recommended-settings/issues/31)) ([bb723b6](https://github.com/Ragav-KS/vscode-recommended-settings/commit/bb723b6f850509e5c83aabaed91a9921e240aeb4)), closes [#29](https://github.com/Ragav-KS/vscode-recommended-settings/issues/29) [#25](https://github.com/Ragav-KS/vscode-recommended-settings/issues/25) [#30](https://github.com/Ragav-KS/vscode-recommended-settings/issues/30)
+
 ## [1.1.0](https://github.com/Ragav-KS/vscode-recommended-settings/compare/v1.0.0...v1.1.0) (2024-12-15)
 
 ### Features
