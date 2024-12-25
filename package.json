@@ -14,7 +14,9 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "workspaceContains:**/.vscode/recommended-settings.json"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
