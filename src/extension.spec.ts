@@ -1,5 +1,5 @@
 import { equal, ok } from "assert";
-import { fake, reset, spy, stub, type SinonSpy } from "sinon";
+import Sinon, { type SinonSpy } from "sinon";
 import {
   commands,
   extensions,
@@ -15,8 +15,13 @@ suite("Extension Test Suite", () => {
   let errorMessageSpy: SinonSpy;
 
   suiteSetup(() => {
-    informationMessageSpy = spy(window, "showInformationMessage");
-    errorMessageSpy = spy(window, "showErrorMessage");
+    informationMessageSpy = Sinon.spy(window, "showInformationMessage");
+    errorMessageSpy = Sinon.spy(window, "showErrorMessage");
+  });
+
+  suiteTeardown(() => {
+    Sinon.reset();
+    Sinon.restore();
   });
 
   suite("Activation", () => {
@@ -41,7 +46,7 @@ suite("Extension Test Suite", () => {
     });
 
     teardown(() => {
-      reset();
+      Sinon.reset();
     });
 
     test("command should be registered", async () => {
@@ -55,8 +60,8 @@ suite("Extension Test Suite", () => {
     });
 
     test("Command should fail if executed outside of a workspace", async () => {
-      // setup stubs
-      stub(workspace, "workspaceFolders").value(undefined);
+      // setup Sinon.stubs
+      Sinon.stub(workspace, "workspaceFolders").value(undefined);
 
       // trigger
       await commands.executeCommand(
@@ -70,8 +75,8 @@ suite("Extension Test Suite", () => {
     });
 
     test("Command should fail if workspace doesn't contain any folders for some reason", async () => {
-      // setup stubs
-      stub(workspace, "workspaceFolders").value([]);
+      // setup Sinon.stubs
+      Sinon.stub(workspace, "workspaceFolders").value([]);
 
       // trigger
       await commands.executeCommand(
@@ -83,8 +88,8 @@ suite("Extension Test Suite", () => {
     });
 
     test("Command should fail if run inside a multi folder workspace", async () => {
-      // setup stubs
-      stub(workspace, "workspaceFolders").value([{}, {}]);
+      // setup Sinon.stubs
+      Sinon.stub(workspace, "workspaceFolders").value([{}, {}]);
 
       // trigger
       await commands.executeCommand(
@@ -100,8 +105,8 @@ suite("Extension Test Suite", () => {
     });
 
     test("Command should load settings from recommended settings file", async () => {
-      // setup stubs
-      stub(workspace, "workspaceFolders").value([
+      // setup Sinon.stubs
+      Sinon.stub(workspace, "workspaceFolders").value([
         {
           uri: {
             fsPath: "g:\\Projects\\some-project",
@@ -109,8 +114,8 @@ suite("Extension Test Suite", () => {
         },
       ]);
 
-      stub(workspace, "fs").value({
-        stat: stub().resolves({
+      Sinon.stub(workspace, "fs").value({
+        stat: Sinon.stub().resolves({
           ctime: 0,
           mtime: 0,
           size: 0,
@@ -118,8 +123,8 @@ suite("Extension Test Suite", () => {
         }),
       });
 
-      stub(workspace, "openTextDocument").resolves({
-        getText: fake.returns('{"files.autoSave": true}'),
+      Sinon.stub(workspace, "openTextDocument").resolves({
+        getText: Sinon.fake.returns('{"files.autoSave": true}'),
       } as unknown as TextDocument);
 
       // trigger
@@ -137,7 +142,7 @@ suite("Extension Test Suite", () => {
     });
 
     test("Command should fail if recommended settings file is not found", async () => {
-      stub(workspace, "workspaceFolders").value([
+      Sinon.stub(workspace, "workspaceFolders").value([
         {
           uri: {
             fsPath: "g:\\Projects\\some-project",
@@ -145,8 +150,8 @@ suite("Extension Test Suite", () => {
         },
       ]);
 
-      stub(workspace, "fs").value({
-        stat: stub().throws(
+      Sinon.stub(workspace, "fs").value({
+        stat: Sinon.stub().throws(
           new FileSystemError(
             "Error: ENOENT: no such file or directory, stat 'g:\\Projects\\some-project\\.vscode\\recommended-settings.json'"
           )

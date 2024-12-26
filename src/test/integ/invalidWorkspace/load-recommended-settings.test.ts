@@ -11,6 +11,10 @@ suite(
       errorMessageSpy = Sinon.spy(window, "showErrorMessage");
     });
 
+    suiteTeardown(() => {
+      Sinon.reset();
+      Sinon.restore();
+    });
 
     test("command should not be registered automatically", async () => {
       const registeredCommands = await commands.getCommands();
