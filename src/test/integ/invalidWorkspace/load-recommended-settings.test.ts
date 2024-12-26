@@ -11,11 +11,12 @@ suite(
       errorMessageSpy = Sinon.spy(window, "showErrorMessage");
     });
 
-    test("command should be registered", async () => {
+
+    test("command should not be registered automatically", async () => {
       const registeredCommands = await commands.getCommands();
 
       ok(
-        registeredCommands.includes(
+        !registeredCommands.includes(
           "recommended-settings.load-recommended-settings"
         )
       );
