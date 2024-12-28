@@ -1,7 +1,9 @@
-import { equal, ok } from "assert";
+import { ok } from "assert";
 import Sinon, { type SinonSpy } from "sinon";
 import {
   type TextDocument,
+  type WorkspaceConfiguration,
+  ConfigurationTarget,
   FileSystemError,
   FileType,
   window,
@@ -115,11 +117,24 @@ suite("LoadRecommendedSettings is as expected", () => {
       getText: Sinon.fake.returns('{"files.autoSave": true}'),
     } as unknown as TextDocument);
 
+    const updateConfigurationFake = Sinon.fake.resolves(undefined);
+
+    Sinon.stub(workspace, "getConfiguration").returns({
+      update: updateConfigurationFake,
+    } as unknown as WorkspaceConfiguration);
+
     // trigger
     await loadRecommendedSettings();
 
     // assert
-    equal(await workspace.getConfiguration().get("files.autoSave"), true);
+    ok(
+      updateConfigurationFake.calledOnceWith(
+        "files.autoSave",
+        true,
+        ConfigurationTarget.Global
+      )
+    );
+
     ok(
       informationMessageSpy.calledOnceWith(
         "Loaded project recommended settings to Global settings."
