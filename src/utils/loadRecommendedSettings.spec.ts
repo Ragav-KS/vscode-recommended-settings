@@ -64,6 +64,34 @@ suite("LoadRecommendedSettings is as expected", () => {
     );
   });
 
+  test("Command should fail if recommended settings file is not found", async () => {
+    Sinon.stub(workspace, "workspaceFolders").value([
+      {
+        uri: {
+          fsPath: "g:\\Projects\\some-project",
+        },
+      },
+    ]);
+
+    Sinon.stub(workspace, "fs").value({
+      stat: Sinon.stub().throws(
+        new FileSystemError(
+          "Error: ENOENT: no such file or directory, stat 'g:\\Projects\\some-project\\.vscode\\recommended-settings.json'"
+        )
+      ),
+    });
+
+    // trigger
+    await loadRecommendedSettings();
+
+    // assert
+    ok(
+      errorMessageSpy.calledOnceWith(
+        "Recommended settings file not found in workspace."
+      )
+    );
+  });
+
   test("Command should load settings from recommended settings file", async () => {
     // setup Sinon.stubs
     Sinon.stub(workspace, "workspaceFolders").value([
@@ -95,34 +123,6 @@ suite("LoadRecommendedSettings is as expected", () => {
     ok(
       informationMessageSpy.calledOnceWith(
         "Loaded project recommended settings to Global settings."
-      )
-    );
-  });
-
-  test("Command should fail if recommended settings file is not found", async () => {
-    Sinon.stub(workspace, "workspaceFolders").value([
-      {
-        uri: {
-          fsPath: "g:\\Projects\\some-project",
-        },
-      },
-    ]);
-
-    Sinon.stub(workspace, "fs").value({
-      stat: Sinon.stub().throws(
-        new FileSystemError(
-          "Error: ENOENT: no such file or directory, stat 'g:\\Projects\\some-project\\.vscode\\recommended-settings.json'"
-        )
-      ),
-    });
-
-    // trigger
-    await loadRecommendedSettings();
-
-    // assert
-    ok(
-      errorMessageSpy.calledOnceWith(
-        "Recommended settings file not found in workspace."
       )
     );
   });
