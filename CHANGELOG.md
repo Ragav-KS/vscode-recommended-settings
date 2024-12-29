@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.1.0](https://github.com/Ragav-KS/vscode-recommended-settings/compare/v2.0.0...v2.1.0) (2024-12-29)
+
+### Features
+
+- **extension:** Control extension activation ([#32](https://github.com/Ragav-KS/vscode-recommended-settings/issues/32)) ([558673c](https://github.com/Ragav-KS/vscode-recommended-settings/commit/558673c36e2d3b8125f7cbdb6fc9a310dacdbc9f)), closes [#24](https://github.com/Ragav-KS/vscode-recommended-settings/issues/24)
+- **icon:** Create and add icon to the extension ([#34](https://github.com/Ragav-KS/vscode-recommended-settings/issues/34)) ([96d6182](https://github.com/Ragav-KS/vscode-recommended-settings/commit/96d6182c3111d30166e43ef149aa9cc1deedca2d)), closes [#21](https://github.com/Ragav-KS/vscode-recommended-settings/issues/21)
+
 ## [2.0.0](https://github.com/Ragav-KS/vscode-recommended-settings/compare/v1.1.0...v2.0.0) (2024-12-18)
 
 ### ⚠ BREAKING CHANGES
