@@ -24,3 +24,11 @@ Team members can load these setttings by activating the command "Load Project Re
 ### Icon
 
 The icon for this extension uses assets from [Visual Studio Code icons](https://github.com/microsoft/vscode-icons), which is licensed under _Creative Commons Attribution 4.0 International_ by Microsoft.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+### Icon License
+
+The icon for this extension is licensed under the Creative Commons Attribution 4.0 International License. See the [LICENSE-ICON](LICENSE-ICON) file for more details.
