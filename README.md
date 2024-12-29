@@ -18,3 +18,9 @@ Keep a file named `recommended-settings.json` in your repository containing the 
 Team members can load these setttings by activating the command "Load Project Recommended Settings".
 
 ![image](https://github.com/user-attachments/assets/ab50429d-b352-43be-89e1-262832730550)
+
+## Attribution
+
+### Icon
+
+The icon for this extension uses assets from [Visual Studio Code icons](https://github.com/microsoft/vscode-icons), which is licensed under _Creative Commons Attribution 4.0 International_ by Microsoft.
