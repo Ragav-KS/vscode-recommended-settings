@@ -1,9 +1,15 @@
 import { ConfigurationTarget, type Uri, workspace } from "vscode";
 
 export async function loadSettingsFromFile(fileUri: Uri) {
-  const recommendedSettingsJson = await workspace
-    .openTextDocument(fileUri)
-    .then((document) => JSON.parse(document.getText()) as Record<string, any>);
+  let recommendedSettingsJson: Record<string, any>;
+
+  const document = await workspace.openTextDocument(fileUri);
+
+  try {
+    recommendedSettingsJson = JSON.parse(document.getText());
+  } catch (error) {
+    throw new Error("Invalid JSON format in the settings file.");
+  }
 
   await Promise.allSettled(
     Object.entries(recommendedSettingsJson).map(([key, value]) =>
