@@ -9,7 +9,7 @@ export async function getUriIfFileExists(
 
   const filePath = path.join(path.join(folderPath, ".vscode"), FILE_NAME);
   const fileUri = Uri.file(filePath);
-
+ 
   try {
     await workspace.fs.stat(fileUri);
 
