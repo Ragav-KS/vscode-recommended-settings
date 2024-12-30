@@ -1,9 +1,7 @@
-import path from "path";
-import { ConfigurationTarget, Uri, window, workspace } from "vscode";
+import { ConfigurationTarget, window, workspace } from "vscode";
+import { getUriIfFileExists } from "./getUriIfFileExists";
 
 export async function loadRecommendedSettings() {
-  const filename = "recommended-settings.json";
-
   if (!workspace.workspaceFolders) {
     window.showErrorMessage("Cannot be run outside of a workspace.");
     return;
@@ -23,17 +21,13 @@ export async function loadRecommendedSettings() {
 
   const workspaceFolder = workspace.workspaceFolders[0];
 
-  const folderPath = workspaceFolder.uri.fsPath;
+  const fileUri = await getUriIfFileExists(workspaceFolder);
 
-  const filePath = path.join(path.join(folderPath, ".vscode"), filename);
-  const fileUri = Uri.file(filePath);
-
-  try {
-    await workspace.fs.stat(fileUri);
-  } catch (err) {
+  if (!fileUri) {
     window.showErrorMessage(
       "Recommended settings file not found in workspace."
     );
+
     return;
   }
 
