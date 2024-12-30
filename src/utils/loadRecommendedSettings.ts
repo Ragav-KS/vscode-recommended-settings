@@ -1,5 +1,6 @@
-import { ConfigurationTarget, window, workspace } from "vscode";
+import { window, workspace } from "vscode";
 import { getUriIfFileExists } from "./getUriIfFileExists";
+import { loadSettingsFromFile } from "./loadSettingsFromFile";
 
 export async function loadRecommendedSettings() {
   if (!workspace.workspaceFolders) {
@@ -33,17 +34,7 @@ export async function loadRecommendedSettings() {
 
   console.log("Found `recommended-settings.json`. Loading settings");
 
-  const recommendedSettingsJson = await workspace
-    .openTextDocument(fileUri)
-    .then((document) => JSON.parse(document.getText()) as Record<string, any>);
-
-  await Promise.allSettled(
-    Object.entries(recommendedSettingsJson).map(([key, value]) =>
-      workspace
-        .getConfiguration()
-        .update(key, value, ConfigurationTarget.Global)
-    )
-  );
+  await loadSettingsFromFile(fileUri);
 
   window.showInformationMessage(
     "Loaded project recommended settings to Global settings."
