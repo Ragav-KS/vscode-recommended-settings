@@ -23,5 +23,9 @@ export async function showNotificationIfFileExists() {
 
   if (selection === "Yes") {
     await loadSettingsFromFile(fileUri);
+
+    window.showInformationMessage(
+      "Loaded project recommended settings to Global settings."
+    );
   }
 }
