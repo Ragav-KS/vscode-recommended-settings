@@ -1,142 +1,95 @@
 import { ok } from "assert";
-import Sinon, { type SinonSpy } from "sinon";
-import {
-  type TextDocument,
-  type WorkspaceConfiguration,
-  ConfigurationTarget,
-  FileSystemError,
-  FileType,
-  window,
-  workspace,
-} from "vscode";
+import { SinonSandbox, createSandbox } from "sinon";
+import { Uri, window, workspace } from "vscode";
+import * as getUriIfFileExistsModule from "./getUriIfFileExists";
 import { loadRecommendedSettings } from "./loadRecommendedSettings";
+import * as loadSettingsFromFileModule from "./loadSettingsFromFile";
 
-suite("LoadRecommendedSettings is as expected", () => {
-  let informationMessageSpy: SinonSpy;
-  let errorMessageSpy: SinonSpy;
+suite("loadRecommendedSettings is as expected", () => {
+  let sandbox: SinonSandbox;
 
-  suiteSetup(() => {
-    informationMessageSpy = Sinon.spy(window, "showInformationMessage");
-    errorMessageSpy = Sinon.spy(window, "showErrorMessage");
-  });
-
-  suiteTeardown(() => {
-    Sinon.reset();
-    Sinon.restore();
+  setup(() => {
+    sandbox = createSandbox();
   });
 
   teardown(() => {
-    Sinon.reset();
+    sandbox.restore();
   });
 
-  test("Command should fail if executed outside of a workspace", async () => {
-    // setup Sinon.stubs
-    Sinon.stub(workspace, "workspaceFolders").value(undefined);
+  test("Should show error message if not in a workspace", async () => {
+    sandbox.stub(workspace, "workspaceFolders").value(undefined);
+    const showErrorMessageStub = sandbox.stub(window, "showErrorMessage");
 
-    // trigger
     await loadRecommendedSettings();
 
-    // assert
-    ok(errorMessageSpy.calledOnceWith("Cannot be run outside of a workspace."));
-  });
-
-  test("Command should fail if workspace doesn't contain any folders for some reason", async () => {
-    // setup Sinon.stubs
-    Sinon.stub(workspace, "workspaceFolders").value([]);
-
-    // trigger
-    await loadRecommendedSettings();
-
-    // assert
-    ok(errorMessageSpy.calledOnceWith("No folders found in workspace"));
-  });
-
-  test("Command should fail if run inside a multi folder workspace", async () => {
-    // setup Sinon.stubs
-    Sinon.stub(workspace, "workspaceFolders").value([{}, {}]);
-
-    // trigger
-    await loadRecommendedSettings();
-
-    // assert
     ok(
-      errorMessageSpy.calledOnceWith(
+      showErrorMessageStub.calledOnceWith(
+        "Cannot be run outside of a workspace."
+      )
+    );
+  });
+
+  test("Should show error message if no folders found in workspace", async () => {
+    sandbox.stub(workspace, "workspaceFolders").value([]);
+    const showErrorMessageStub = sandbox.stub(window, "showErrorMessage");
+
+    await loadRecommendedSettings();
+
+    ok(showErrorMessageStub.calledOnceWith("No folders found in workspace"));
+  });
+
+  test("Should show error message if multiple folders found in workspace", async () => {
+    sandbox.stub(workspace, "workspaceFolders").value([{}, {}]);
+    const showErrorMessageStub = sandbox.stub(window, "showErrorMessage");
+
+    await loadRecommendedSettings();
+
+    ok(
+      showErrorMessageStub.calledOnceWith(
         "Loading from multi-folder workspace is currently not supported."
       )
     );
   });
 
-  test("Command should fail if recommended settings file is not found", async () => {
-    Sinon.stub(workspace, "workspaceFolders").value([
-      {
-        uri: {
-          fsPath: "g:\\Projects\\some-project",
-        },
-      },
-    ]);
+  test("Should show error message if recommended settings file not found", async () => {
+    sandbox
+      .stub(workspace, "workspaceFolders")
+      .value([{ uri: Uri.file("/path/to/workspace") }]);
+    sandbox
+      .stub(getUriIfFileExistsModule, "getUriIfFileExists")
+      .resolves(undefined);
+    const showErrorMessageStub = sandbox.stub(window, "showErrorMessage");
 
-    Sinon.stub(workspace, "fs").value({
-      stat: Sinon.stub().throws(
-        new FileSystemError(
-          "Error: ENOENT: no such file or directory, stat 'g:\\Projects\\some-project\\.vscode\\recommended-settings.json'"
-        )
-      ),
-    });
-
-    // trigger
     await loadRecommendedSettings();
 
-    // assert
     ok(
-      errorMessageSpy.calledOnceWith(
+      showErrorMessageStub.calledOnceWith(
         "Recommended settings file not found in workspace."
       )
     );
   });
 
-  test("Command should load settings from recommended settings file", async () => {
-    // setup Sinon.stubs
-    Sinon.stub(workspace, "workspaceFolders").value([
-      {
-        uri: {
-          fsPath: "g:\\Projects\\some-project",
-        },
-      },
-    ]);
+  test("Should load settings from file if recommended settings file is found", async () => {
+    const workspaceFolder = { uri: Uri.file("/path/to/workspace") };
+    const fileUri = Uri.file("/path/to/workspace/recommended-settings.json");
 
-    Sinon.stub(workspace, "fs").value({
-      stat: Sinon.stub().resolves({
-        ctime: 0,
-        mtime: 0,
-        size: 0,
-        type: FileType.File,
-      }),
-    });
-
-    Sinon.stub(workspace, "openTextDocument").resolves({
-      getText: Sinon.fake.returns('{"files.autoSave": true}'),
-    } as unknown as TextDocument);
-
-    const updateConfigurationFake = Sinon.fake.resolves(undefined);
-
-    Sinon.stub(workspace, "getConfiguration").returns({
-      update: updateConfigurationFake,
-    } as unknown as WorkspaceConfiguration);
-
-    // trigger
-    await loadRecommendedSettings();
-
-    // assert
-    ok(
-      updateConfigurationFake.calledOnceWith(
-        "files.autoSave",
-        true,
-        ConfigurationTarget.Global
-      )
+    sandbox.stub(workspace, "workspaceFolders").value([workspaceFolder]);
+    sandbox
+      .stub(getUriIfFileExistsModule, "getUriIfFileExists")
+      .resolves(fileUri);
+    const loadSettingsFromFileStub = sandbox
+      .stub(loadSettingsFromFileModule, "loadSettingsFromFile")
+      .resolves();
+    const showInformationMessageStub = sandbox.stub(
+      window,
+      "showInformationMessage"
     );
 
+    await loadRecommendedSettings();
+
+    ok(loadSettingsFromFileStub.calledOnceWith(fileUri));
     ok(
-      informationMessageSpy.calledOnceWith(
+      showInformationMessageStub.calledOnceWith(
         "Loaded project recommended settings to Global settings."
       )
     );

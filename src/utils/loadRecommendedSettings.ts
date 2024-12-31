@@ -1,9 +1,8 @@
-import path from "path";
-import { ConfigurationTarget, Uri, window, workspace } from "vscode";
+import { window, workspace } from "vscode";
+import { getUriIfFileExists } from "./getUriIfFileExists";
+import { loadSettingsFromFile } from "./loadSettingsFromFile";
 
 export async function loadRecommendedSettings() {
-  const filename = "recommended-settings.json";
-
   if (!workspace.workspaceFolders) {
     window.showErrorMessage("Cannot be run outside of a workspace.");
     return;
@@ -23,33 +22,19 @@ export async function loadRecommendedSettings() {
 
   const workspaceFolder = workspace.workspaceFolders[0];
 
-  const folderPath = workspaceFolder.uri.fsPath;
+  const fileUri = await getUriIfFileExists(workspaceFolder);
 
-  const filePath = path.join(path.join(folderPath, ".vscode"), filename);
-  const fileUri = Uri.file(filePath);
-
-  try {
-    await workspace.fs.stat(fileUri);
-  } catch (err) {
+  if (!fileUri) {
     window.showErrorMessage(
       "Recommended settings file not found in workspace."
     );
+
     return;
   }
 
   console.log("Found `recommended-settings.json`. Loading settings");
 
-  const recommendedSettingsJson = await workspace
-    .openTextDocument(fileUri)
-    .then((document) => JSON.parse(document.getText()) as Record<string, any>);
-
-  await Promise.allSettled(
-    Object.entries(recommendedSettingsJson).map(([key, value]) =>
-      workspace
-        .getConfiguration()
-        .update(key, value, ConfigurationTarget.Global)
-    )
-  );
+  await loadSettingsFromFile(fileUri);
 
   window.showInformationMessage(
     "Loaded project recommended settings to Global settings."
