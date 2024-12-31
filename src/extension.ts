@@ -5,7 +5,7 @@ import { showNotificationIfFileExists } from "./utils/showNotificationIfFileExis
 export function activate(context: ExtensionContext) {
   console.log("Activating extension");
 
-  showNotificationIfFileExists();
+  showNotificationIfFileExists(context.workspaceState);
 
   const disposable = commands.registerCommand(
     "recommended-settings.load-recommended-settings",
