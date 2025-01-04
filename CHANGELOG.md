@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.3.0](https://github.com/Ragav-KS/vscode-recommended-settings/compare/v2.2.0...v2.3.0) (2025-01-04)
+
+### Features
+
+- **extension:** provide schema for recommended settings file ([#39](https://github.com/Ragav-KS/vscode-recommended-settings/issues/39)) ([79b2c78](https://github.com/Ragav-KS/vscode-recommended-settings/commit/79b2c78ac70085f9c14639ad176fce9ffe1b20bf)), closes [#10](https://github.com/Ragav-KS/vscode-recommended-settings/issues/10)
+
 ## [2.2.0](https://github.com/Ragav-KS/vscode-recommended-settings/compare/v2.1.0...v2.2.0) (2025-01-04)
 
 ### Features
