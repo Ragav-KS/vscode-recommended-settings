@@ -1,5 +1,15 @@
 # Change Log
 
+## [2.2.0](https://github.com/Ragav-KS/vscode-recommended-settings/compare/v2.1.0...v2.2.0) (2025-01-04)
+
+### Features
+
+- **extension:** show notification to load settings ([#37](https://github.com/Ragav-KS/vscode-recommended-settings/issues/37)) ([81fa08e](https://github.com/Ragav-KS/vscode-recommended-settings/commit/81fa08e23c037b74c643a90e64e1ebd268bfb75b)), closes [#4](https://github.com/Ragav-KS/vscode-recommended-settings/issues/4)
+
+### Code Refactoring
+
+- **extension:** modularize functions and add more thorough unit tests ([#35](https://github.com/Ragav-KS/vscode-recommended-settings/issues/35)) ([7728814](https://github.com/Ragav-KS/vscode-recommended-settings/commit/77288146d175b13b04d984549c16f448531d6148))
+
 ## [2.1.0](https://github.com/Ragav-KS/vscode-recommended-settings/compare/v2.0.0...v2.1.0) (2024-12-29)
 
 ### Features
