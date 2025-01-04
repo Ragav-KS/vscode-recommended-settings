@@ -15,7 +15,13 @@ Keep a file named `recommended-settings.json` in your repository containing the 
 }
 ```
 
-Team members can load these setttings by activating the command "Load Project Recommended Settings".
+A Notification is displayed when a workspace is loaded that contains the file, offerring team members to load the specified settings like below.
+
+![image](https://github.com/user-attachments/assets/613f7515-5fc6-43d8-92a3-3aec33f97778)
+
+CLicking "Yes" loads the settings to User settings.
+
+The settings can also be loaded by activating the command "Load Project Recommended Settings".
 
 ![image](https://github.com/user-attachments/assets/ab50429d-b352-43be-89e1-262832730550)
 
