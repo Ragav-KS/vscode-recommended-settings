@@ -25,6 +25,12 @@
         "command": "recommended-settings.load-recommended-settings",
         "title": "Load Project Recommended Settings"
       }
+    ],
+    "jsonValidation": [
+      {
+        "fileMatch": ".vscode/recommended-settings.json",
+        "url": "vscode://schemas/settings/user"
+      }
     ]
   },
   "scripts": {
