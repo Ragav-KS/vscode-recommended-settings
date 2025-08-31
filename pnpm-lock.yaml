@@ -1994,8 +1994,8 @@ packages:
     resolution: {integrity: sha512-cAGWPIyOHU6zlmg88jwm7VRyXnMN7iV68OGAbYDk/Mh/xC/pzVPlQtY6ngoIH/5/tciuhGfvESU8GrHrcxD56w==}
     engines: {node: '>=8'}
 
-  tmp@0.2.3:
-    resolution: {integrity: sha512-nZD7m9iCPC5g0pYmcaxogYKggSfLsdxl8of3Q/oIbqCqLLIO9IAF0GWjX1z9NZRHPiXv8Wex4yDCaZsgEw0Y8w==}
+  tmp@0.2.4:
+    resolution: {integrity: sha512-UdiSoX6ypifLmrfQ/XfiawN6hkjSBpCjhKxxZcWlUUmoXLaCKQU0bx4HF/tdDK2uzRuchf1txGvrWBzYREssoQ==}
     engines: {node: '>=14.14'}
 
   to-regex-range@5.0.1:
@@ -2670,7 +2670,7 @@ snapshots:
       parse-semver: 1.1.1
       read: 1.0.7
       semver: 7.6.3
-      tmp: 0.2.3
+      tmp: 0.2.4
       typed-rest-client: 1.8.11
       url-join: 4.0.1
       xml2js: 0.5.0
@@ -4377,7 +4377,7 @@ snapshots:
       glob: 7.2.3
       minimatch: 3.1.2
 
-  tmp@0.2.3: {}
+  tmp@0.2.4: {}
 
   to-regex-range@5.0.1:
     dependencies:
