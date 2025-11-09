@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.4.0](https://github.com/Ragav-KS/vscode-recommended-settings/compare/v2.3.1...v2.4.0) (2025-11-09)
+
+### Features
+
+- **github:** configure automatic dependabot updates ([#47](https://github.com/Ragav-KS/vscode-recommended-settings/issues/47)) ([3f262b8](https://github.com/Ragav-KS/vscode-recommended-settings/commit/3f262b8dc6461501027bdaa6b79a0c1ada5d8b82))
+
 ### [2.3.1](https://github.com/Ragav-KS/vscode-recommended-settings/compare/v2.3.0...v2.3.1) (2025-03-29)
 
 ## [2.3.0](https://github.com/Ragav-KS/vscode-recommended-settings/compare/v2.2.0...v2.3.0) (2025-01-04)
