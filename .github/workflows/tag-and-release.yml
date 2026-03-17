@@ -103,22 +103,16 @@ jobs:
         with:
           name: vsix-package
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: "pnpm"
 
       - name: Publish to VS Code Marketplace
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
         run: |
-          pnpm exec vsce publish --packagePath recommended-settings-*.vsix --no-dependencies
+          npx @vscode/vsce publish --packagePath recommended-settings-*.vsix --no-dependencies
 
   publish-openvsx:
     runs-on: ubuntu-latest
@@ -131,22 +125,16 @@ jobs:
         with:
           name: vsix-package
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: "pnpm"
 
       - name: Publish to Open VSX
         env:
           OVSX_PAT: ${{ secrets.OVSX_PAT }}
         run: |
-          pnpm exec ovsx publish recommended-settings-*.vsix --pat $OVSX_PAT
+          npx ovsx publish recommended-settings-*.vsix --pat $OVSX_PAT
 
   tag-and-release:
     runs-on: ubuntu-latest
