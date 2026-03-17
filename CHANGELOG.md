@@ -1,5 +1,16 @@
 # Change Log
 
+## [2.5.0](https://github.com/Ragav-KS/vscode-recommended-settings/compare/v2.4.0...v2.5.0) (2026-03-17)
+
+### Features
+
+- **ci:** add support for publishing to Open VSX registry ([#101](https://github.com/Ragav-KS/vscode-recommended-settings/issues/101)) ([4250ad9](https://github.com/Ragav-KS/vscode-recommended-settings/commit/4250ad9ad38866cb1587cc47303da26455adc140)), closes [#90](https://github.com/Ragav-KS/vscode-recommended-settings/issues/90)
+
+### Bug Fixes
+
+- **cd:** fix tag-and-release workflow errors and warnings ([#103](https://github.com/Ragav-KS/vscode-recommended-settings/issues/103)) ([516ec5a](https://github.com/Ragav-KS/vscode-recommended-settings/commit/516ec5a1ea2be9dad39805ef67b276cd45edcf44))
+- **cd:** use npx for publishing commands instead of pnpm exec ([#104](https://github.com/Ragav-KS/vscode-recommended-settings/issues/104)) ([400d3c6](https://github.com/Ragav-KS/vscode-recommended-settings/commit/400d3c62d9af3c255175ce2fb3438d8954ba1207))
+
 ## [2.4.0](https://github.com/Ragav-KS/vscode-recommended-settings/compare/v2.3.1...v2.4.0) (2025-11-09)
 
 ### Features
